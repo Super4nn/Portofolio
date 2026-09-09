@@ -1,4 +1,12 @@
-function App() {
+import firebaseApp from "./lib/firebase"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Login from "./pages/Login"
+import Admin from "./pages/Admin"
+import ProtectedRoute from "./components/ProtectedRoute"
+
+function Portfolio() {
+  console.log("Firebase berhasil:", firebaseApp)
+
   return (
     <div className="min-h-screen bg-white text-gray-900">
 
@@ -169,6 +177,7 @@ function App() {
                 <p className="mt-2 text-sm text-gray-500">
                   Skill description
                 </p>
+
               </div>
             ))}
 
@@ -394,6 +403,37 @@ function App() {
       </footer>
 
     </div>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+
+      <Routes>
+
+        <Route
+          path="/"
+          element={<Portfolio />}
+        />
+
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+
+      </Routes>
+
+    </BrowserRouter>
   )
 }
 
