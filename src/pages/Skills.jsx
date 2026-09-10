@@ -15,12 +15,7 @@ export default function Skills() {
     const fetchSkills = async () => {
       try {
         const skillsRef = collection(db, "skills")
-
-        const skillsQuery = query(
-          skillsRef,
-          orderBy("sortOrder", "asc")
-        )
-
+        const skillsQuery = query(skillsRef, orderBy("sortOrder", "asc"))
         const snapshot = await getDocs(skillsQuery)
 
         const data = snapshot.docs.map((item) => ({
@@ -39,97 +34,127 @@ export default function Skills() {
     fetchSkills()
   }, [])
 
+  // Group skills dynamically by category
+  const categories = skills.reduce((acc, skill) => {
+    const cat = skill.category?.trim() || "General & Core"
+    if (!acc[cat]) {
+      acc[cat] = []
+    }
+    acc[cat].push(skill)
+    return acc
+  }, {})
+
   return (
     <section
       id="skills"
-      className="scroll-mt-24 bg-gray-50 px-6 py-24 dark:bg-gray-900"
+      className="scroll-mt-24 px-6 py-20 sm:px-8 lg:py-24 bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300"
     >
       <div className="mx-auto max-w-6xl">
-        {/* Heading */}
-        <div className="mb-12">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
-            Skills
-          </p>
+        <hr className="editorial-rule mb-16" />
 
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-            Keahlian Saya
-          </h2>
+        {/* Section Header */}
+        <div className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="font-mono text-xs tracking-[0.2em] uppercase text-[var(--accent)] mb-2">
+              02 // EXPERTISE
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
+              Technical Stack & Capabilities
+            </h2>
+          </div>
 
-          <p className="mt-4 max-w-2xl text-base leading-7 text-gray-500 dark:text-gray-400">
-            Teknologi dan keahlian yang saya gunakan dalam
-            pengembangan website dan aplikasi.
+          <p className="max-w-md font-sans text-sm leading-relaxed text-[var(--text-secondary)]">
+            Kumpulan teknologi, framework, dan peralatan yang saya gunakan secara aktif dalam merancang dan mengembangkan solusi digital modern.
           </p>
         </div>
 
-        {/* Loading */}
+        {/* Loading State */}
         {loading && (
-          <div className="text-sm text-gray-500 dark:text-gray-400">
-            Memuat skills...
+          <div className="py-12 font-mono text-xs text-[var(--text-muted)] tracking-wider uppercase">
+            Memuat daftar keahlian...
           </div>
         )}
 
-        {/* Empty */}
+        {/* Empty State */}
         {!loading && skills.length === 0 && (
-          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-950">
-            <p className="text-gray-500 dark:text-gray-400">
-              Belum ada skill yang ditambahkan.
+          <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-secondary)]/30 p-8 text-center">
+            <p className="font-mono text-xs uppercase tracking-wider text-[var(--text-muted)]">
+              Belum ada keahlian yang ditambahkan.
             </p>
           </div>
         )}
 
-        {/* Skills */}
+        {/* Grouped Skills Display */}
         {!loading && skills.length > 0 && (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {skills.map((skill) => (
-              <div
-                key={skill.id}
-                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-950"
-              >
-                {/* Icon + Name */}
-                <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-lg font-semibold text-gray-700 dark:bg-gray-800 dark:text-gray-300">
-                    {skill.icon || "⚡"}
-                  </div>
-
-                  <div className="min-w-0">
-                    <h3 className="font-semibold text-gray-900 dark:text-white">
-                      {skill.name}
-                    </h3>
-
-                    {skill.category && (
-                      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        {skill.category}
-                      </p>
-                    )}
-                  </div>
+          <div className="space-y-12">
+            {Object.entries(categories).map(([categoryName, items]) => (
+              <div key={categoryName} className="space-y-4">
+                {/* Category Header */}
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-[11px] font-semibold tracking-[0.18em] uppercase text-[var(--text-secondary)]">
+                    {categoryName}
+                  </span>
+                  <div className="h-px flex-1 bg-[var(--border-subtle)]" />
+                  <span className="font-mono text-[10px] text-[var(--text-muted)]">
+                    {items.length} {items.length === 1 ? "skill" : "skills"}
+                  </span>
                 </div>
 
-                {/* Level */}
-                {typeof skill.level === "number" && (
-                  <div className="mt-6">
-                    <div className="mb-2 flex items-center justify-between">
-                      <span className="text-xs font-medium text-gray-500 dark:text-gray-400">
-                        Level
-                      </span>
+                {/* Skills Grid */}
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {items.map((skill) => {
+                    const isIconUrl =
+                      typeof skill.icon === "string" &&
+                      (skill.icon.startsWith("http://") ||
+                        skill.icon.startsWith("https://") ||
+                        skill.icon.startsWith("/"))
 
-                      <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
-                        {skill.level}%
-                      </span>
-                    </div>
-
-                    <div className="h-2 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
+                    return (
                       <div
-                        className="h-full rounded-full bg-gray-900 transition-all dark:bg-white"
-                        style={{
-                          width: `${Math.min(
-                            Math.max(skill.level, 0),
-                            100
-                          )}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                )}
+                        key={skill.id}
+                        className="group relative flex items-center justify-between rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-secondary)]/40 p-4 transition-all duration-200 hover:border-[var(--border-strong)] hover:bg-[var(--bg-secondary)]"
+                      >
+                        <div className="flex items-center gap-3.5 min-w-0">
+                          {/* Icon Container */}
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-primary)] text-sm font-mono font-bold text-[var(--text-primary)] transition-colors group-hover:border-[var(--accent)] group-hover:text-[var(--accent)] overflow-hidden">
+                            {isIconUrl ? (
+                              <img
+                                src={skill.icon}
+                                alt={skill.name}
+                                className="h-6 w-6 object-contain"
+                              />
+                            ) : (
+                              <span className="truncate px-1 text-xs">
+                                {skill.icon ? skill.icon.slice(0, 3).toUpperCase() : "DEV"}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Name & Category info */}
+                          <div className="min-w-0">
+                            <h3 className="font-sans text-sm font-semibold text-[var(--text-primary)] truncate">
+                              {skill.name}
+                            </h3>
+                            <p className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-muted)] truncate">
+                              {skill.category || "Core"}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Level Presentation (Refined, no artificial progress bar) */}
+                        {typeof skill.level === "number" && (
+                          <div className="shrink-0 flex items-center gap-2 pl-3">
+                            <span className="font-mono text-[11px] font-medium text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors">
+                              {skill.level}%
+                            </span>
+                            {/* Discrete indicator pill */}
+                            <span className="h-1.5 w-1.5 rounded-full bg-[var(--accent)] opacity-70 group-hover:opacity-100" />
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             ))}
           </div>

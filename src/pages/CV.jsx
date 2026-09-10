@@ -15,17 +15,11 @@ export default function CV() {
     const fetchCV = async () => {
       try {
         const cvRef = collection(db, "cv")
-
-        const cvQuery = query(
-          cvRef,
-          where("isActive", "==", true)
-        )
-
+        const cvQuery = query(cvRef, where("isActive", "==", true))
         const snapshot = await getDocs(cvQuery)
 
         if (!snapshot.empty) {
           const document = snapshot.docs[0]
-
           setCv({
             id: document.id,
             ...document.data(),
@@ -44,79 +38,81 @@ export default function CV() {
   return (
     <section
       id="cv"
-      className="scroll-mt-24 bg-white px-6 py-24 dark:bg-gray-950"
+      className="scroll-mt-24 px-6 py-20 sm:px-8 lg:py-24 bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300"
     >
-      <div className="mx-auto max-w-4xl">
-        {/* Heading */}
-        <div className="mb-10 text-center">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
-            Curriculum Vitae
-          </p>
+      <div className="mx-auto max-w-6xl">
+        <hr className="editorial-rule mb-16" />
 
-          <h2 className="mt-3 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-            CV Saya
-          </h2>
+        {/* Section Header */}
+        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="font-mono text-xs tracking-[0.2em] uppercase text-[var(--accent)] mb-2">
+              05 // CURRICULUM VITAE
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
+              Curriculum Vitae
+            </h2>
+          </div>
 
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-gray-500 dark:text-gray-400">
-            Lihat atau download curriculum vitae saya untuk mengetahui
-            informasi lebih lengkap mengenai pengalaman dan kemampuan.
+          <p className="max-w-md font-sans text-sm leading-relaxed text-[var(--text-secondary)]">
+            Dokumen riwayat hidup resmi yang merangkum latar belakang pendidikan, perjalanan karier, dan kualifikasi teknis.
           </p>
         </div>
 
-        {/* Loading */}
+        {/* Loading State */}
         {loading && (
-          <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-            Memuat CV...
+          <div className="py-12 flex items-center justify-center">
+            <span className="font-mono text-xs uppercase tracking-widest text-[var(--text-tertiary)] animate-pulse">
+              Memuat data CV...
+            </span>
           </div>
         )}
 
-        {/* CV */}
+        {/* CV Available: Minimal Inline Action Banner */}
         {!loading && cv && cv.fileUrl && (
-          <div className="rounded-2xl border border-gray-200 bg-gray-50 p-8 text-center shadow-sm dark:border-gray-700 dark:bg-gray-900">
-            {/* Icon */}
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white text-3xl shadow-sm dark:bg-gray-950">
-              📄
+          <div className="rounded-[6px] border border-[var(--border)] bg-[var(--bg-secondary)]/30 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 transition-all duration-300 hover:border-[var(--border-strong)]">
+            <div className="space-y-2">
+              <div className="flex items-center gap-3">
+                <span className="inline-block h-2 w-2 rounded-full bg-[var(--accent)]" />
+                <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+                  {cv.title || "Curriculum Vitae Lengkap"}
+                </h3>
+              </div>
+
+              <p className="font-mono text-xs text-[var(--text-tertiary)] pl-5">
+                {cv.fileName ? cv.fileName : "PDF Document · Terverifikasi"}
+              </p>
             </div>
 
-            <h3 className="mt-5 text-xl font-semibold text-gray-900 dark:text-white">
-              {cv.title || "Curriculum Vitae"}
-            </h3>
-
-            {cv.fileName && (
-              <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                {cv.fileName}
-              </p>
-            )}
-
-            {/* Buttons */}
-            <div className="mt-7 flex flex-wrap justify-center gap-3">
+            {/* Editorial Action Links */}
+            <div className="flex items-center gap-5 sm:gap-6 pl-5 sm:pl-0 font-mono text-xs">
               <a
                 href={cv.fileUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-xl bg-gray-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+                className="inline-flex items-center gap-1.5 text-[var(--text-primary)] hover:text-[var(--accent)] transition-colors font-medium underline-offset-4 hover:underline"
               >
                 Lihat CV
+                <span aria-hidden="true">↗</span>
               </a>
 
               <a
                 href={cv.fileUrl}
-                download
-                className="rounded-xl border border-gray-300 px-5 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                download={cv.fileName || "CV-Andika-Rizki-Febrian.pdf"}
+                className="inline-flex items-center gap-1.5 rounded-[4px] border border-[var(--border)] bg-[var(--bg-secondary)] px-4 py-2 text-[var(--text-primary)] transition-all hover:border-[var(--border-strong)] hover:text-[var(--accent)]"
               >
                 Download CV
+                <span aria-hidden="true">↓</span>
               </a>
             </div>
           </div>
         )}
 
-        {/* No CV */}
+        {/* Empty State: CV Not Available */}
         {!loading && (!cv || !cv.fileUrl) && (
-          <div className="rounded-2xl border border-gray-200 bg-gray-50 p-8 text-center dark:border-gray-700 dark:bg-gray-900">
-            <div className="text-4xl">📄</div>
-
-            <p className="mt-4 text-gray-500 dark:text-gray-400">
-              CV belum tersedia.
+          <div className="rounded-[6px] border border-[var(--border)] bg-[var(--bg-secondary)]/30 p-8 sm:p-10 text-center">
+            <p className="font-mono text-xs uppercase tracking-wider text-[var(--text-tertiary)]">
+              Dokumen CV sedang diperbarui dan akan segera tersedia.
             </p>
           </div>
         )}

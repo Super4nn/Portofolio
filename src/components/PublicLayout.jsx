@@ -4,7 +4,7 @@ import Footer from "./Footer"
 
 export default function PublicLayout() {
   return (
-    <div className="min-h-screen scroll-smooth bg-white text-gray-900 dark:bg-gray-950 dark:text-white">
+    <div className="min-h-screen scroll-smooth bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300">
       <Navbar />
 
       <main>

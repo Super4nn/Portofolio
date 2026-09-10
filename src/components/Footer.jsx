@@ -8,118 +8,92 @@ export default function Footer() {
     const fetchProfile = async () => {
       try {
         const data = await getProfile()
-        setProfile(data)
+        if (data) {
+          setProfile(data)
+        }
       } catch (error) {
-        console.error("Gagal mengambil profile:", error)
+        console.error("Gagal mengambil profile di footer:", error)
       }
     }
 
     fetchProfile()
   }, [])
 
-  const navItems = [
-    { label: "Home", href: "#home" },
-    { label: "About", href: "#about" },
-    { label: "Skills", href: "#skills" },
-    { label: "Experience", href: "#experience" },
-    { label: "Projects", href: "#projects" },
-    { label: "CV", href: "#cv" },
-    { label: "Contact", href: "#contact" },
-  ]
+  const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
-      <div className="mx-auto max-w-6xl px-6 py-12">
-        <div className="grid gap-10 md:grid-cols-3">
-          {/* Profile */}
-          <div>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
-              {profile?.name || "Portfolio"}
+    <footer className="border-t border-[var(--border)] bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300">
+      <div className="mx-auto max-w-6xl px-6 py-12 sm:px-8">
+        {/* Main Footer Row */}
+        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+          {/* Identity */}
+          <div className="space-y-1">
+            <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+              {profile?.name || "Andika Rizki Febrian"}
             </h3>
-
-            <p className="mt-3 max-w-sm text-sm leading-6 text-gray-500 dark:text-gray-400">
-              {profile?.headline ||
-                "Web Developer & Software Developer"}
+            <p className="font-mono text-xs text-[var(--text-tertiary)]">
+              {profile?.role || profile?.headline || "Web & Software Developer"}
             </p>
           </div>
 
-          {/* Navigation */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-900 dark:text-white">
-              Navigasi
-            </h3>
+          {/* Social Links (Inline Editorial dot-separated) */}
+          <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--text-secondary)]">
+            {profile?.githubUrl && (
+              <a
+                href={profile.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[var(--accent)] transition-colors underline-offset-4 hover:underline"
+              >
+                GitHub ↗
+              </a>
+            )}
 
-            <div className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="text-sm text-gray-500 transition hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                >
-                  {item.label}
-                </a>
-              ))}
-            </div>
-          </div>
+            {profile?.githubUrl && (profile?.linkedinUrl || profile?.instagramUrl) && (
+              <span className="text-[var(--border-strong)]" aria-hidden="true">·</span>
+            )}
 
-          {/* Social */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-900 dark:text-white">
-              Social Media
-            </h3>
+            {profile?.linkedinUrl && (
+              <a
+                href={profile.linkedinUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[var(--accent)] transition-colors underline-offset-4 hover:underline"
+              >
+                LinkedIn ↗
+              </a>
+            )}
 
-            <div className="mt-4 flex flex-wrap gap-3">
-              {profile?.githubUrl && (
-                <a
-                  href={profile.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                >
-                  GitHub
-                </a>
-              )}
+            {profile?.linkedinUrl && profile?.instagramUrl && (
+              <span className="text-[var(--border-strong)]" aria-hidden="true">·</span>
+            )}
 
-              {profile?.linkedinUrl && (
-                <a
-                  href={profile.linkedinUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                >
-                  LinkedIn
-                </a>
-              )}
-
-              {profile?.instagramUrl && (
-                <a
-                  href={profile.instagramUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                >
-                  Instagram
-                </a>
-              )}
-            </div>
+            {profile?.instagramUrl && (
+              <a
+                href={profile.instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[var(--accent)] transition-colors underline-offset-4 hover:underline"
+              >
+                Instagram ↗
+              </a>
+            )}
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="mt-10 border-t border-gray-200 pt-6 dark:border-gray-800">
-          <div className="flex flex-col gap-2 text-sm text-gray-500 dark:text-gray-400 sm:flex-row sm:items-center sm:justify-between">
-            <p>
-              © {new Date().getFullYear()}{" "}
-              {profile?.name || "Portfolio"}. All rights reserved.
-            </p>
+        {/* Bottom Strip */}
+        <div className="mt-10 pt-6 border-t border-[var(--border)] flex flex-col gap-3 text-xs font-mono text-[var(--text-tertiary)] sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {currentYear} {profile?.name || "Andika Rizki Febrian"}. All rights reserved.
+          </p>
 
-            <a
-              href="#home"
-              className="transition hover:text-gray-900 dark:hover:text-white"
-            >
-              Kembali ke atas ↑
-            </a>
-          </div>
+          <a
+            href="#home"
+            className="hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5 self-start sm:self-auto"
+          >
+            <span>Kembali ke atas</span>
+            <span aria-hidden="true">↑</span>
+          </a>
         </div>
       </div>
     </footer>
