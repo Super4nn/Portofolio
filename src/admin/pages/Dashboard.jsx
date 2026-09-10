@@ -1,191 +1,216 @@
-function Dashboard() {
-  const stats = [
+import { useEffect, useState } from "react"
+import { collection, getDocs } from "firebase/firestore"
+import { db } from "../../lib/firebase"
+import { Link } from "react-router-dom"
+
+export default function Dashboard() {
+  const [stats, setStats] = useState({
+    projects: 0,
+    skills: 0,
+    experiences: 0,
+    messages: 0,
+  })
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        setLoading(true)
+
+        const [
+          projectsSnapshot,
+          skillsSnapshot,
+          experiencesSnapshot,
+          messagesSnapshot,
+        ] = await Promise.all([
+          getDocs(collection(db, "projects")),
+          getDocs(collection(db, "skills")),
+          getDocs(collection(db, "experiences")),
+          getDocs(collection(db, "messages")),
+        ])
+
+        setStats({
+          projects: projectsSnapshot.size,
+          skills: skillsSnapshot.size,
+          experiences: experiencesSnapshot.size,
+          messages: messagesSnapshot.size,
+        })
+      } catch (error) {
+        console.error("Gagal mengambil statistik:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [])
+
+  const statCards = [
     {
       title: "Projects",
-      value: "1",
-      description: "Total project",
+      value: stats.projects,
+      description: "Total project portfolio",
+      icon: "📁",
+      link: "/admin/projects",
     },
     {
       title: "Skills",
-      value: "1",
+      value: stats.skills,
       description: "Total skill",
+      icon: "⚡",
+      link: "/admin/skills",
     },
     {
       title: "Experience",
-      value: "1",
-      description: "Total experience",
+      value: stats.experiences,
+      description: "Total pengalaman",
+      icon: "💼",
+      link: "/admin/experience",
     },
     {
       title: "Messages",
-      value: "0",
-      description: "Pesan belum dibaca",
+      value: stats.messages,
+      description: "Pesan dari pengunjung",
+      icon: "💬",
+      link: "/admin/messages",
     },
   ]
 
-  const management = [
+  const quickActions = [
     {
       title: "Profile",
-      description: "Kelola informasi profile dan sosial media.",
-      path: "/admin/profile",
+      description: "Kelola informasi profile",
+      icon: "👤",
+      link: "/admin/profile",
     },
     {
       title: "Skills",
-      description: "Kelola daftar skill dan tingkat kemampuan.",
-      path: "/admin/skills",
+      description: "Kelola skill",
+      icon: "⚡",
+      link: "/admin/skills",
     },
     {
       title: "Experience",
-      description: "Kelola pengalaman pendidikan dan pekerjaan.",
-      path: "/admin/experience",
+      description: "Kelola pengalaman",
+      icon: "💼",
+      link: "/admin/experience",
     },
     {
       title: "Projects",
-      description: "Kelola project portfolio.",
-      path: "/admin/projects",
+      description: "Kelola project",
+      icon: "📁",
+      link: "/admin/projects",
     },
     {
       title: "CV",
-      description: "Kelola file Curriculum Vitae.",
-      path: "/admin/cv",
+      description: "Kelola CV",
+      icon: "📄",
+      link: "/admin/cv",
     },
     {
       title: "Messages",
-      description: "Lihat pesan dari pengunjung.",
-      path: "/admin/messages",
+      description: "Lihat pesan pengunjung",
+      icon: "💬",
+      link: "/admin/messages",
     },
   ]
 
   return (
     <div className="space-y-8">
-
-      {/* Page Title */}
+      {/* Header */}
       <div>
-        <p className="text-sm font-medium text-gray-500">
-          Overview
-        </p>
-
-        <h1 className="mt-1 text-3xl font-bold">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
           Dashboard
         </h1>
 
-        <p className="mt-2 text-gray-500">
-          Selamat datang di dashboard portfolio Anda.
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Ringkasan data portfolio Anda.
         </p>
       </div>
 
       {/* Statistics */}
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
-        {stats.map((stat) => (
-          <div
-            key={stat.title}
-            className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        {statCards.map((card) => (
+          <Link
+            key={card.title}
+            to={card.link}
+            className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
           >
-            <p className="text-sm font-medium text-gray-500">
-              {stat.title}
-            </p>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                  {card.title}
+                </p>
 
-            <p className="mt-3 text-3xl font-bold">
-              {stat.value}
-            </p>
+                <p className="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
+                  {loading ? "..." : card.value}
+                </p>
 
-            <p className="mt-2 text-sm text-gray-500">
-              {stat.description}
-            </p>
-          </div>
+                <p className="mt-2 text-xs text-gray-400">
+                  {card.description}
+                </p>
+              </div>
+
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gray-100 text-xl transition group-hover:scale-110 dark:bg-gray-800">
+                {card.icon}
+              </div>
+            </div>
+          </Link>
         ))}
-
       </div>
 
-      {/* Management */}
+      {/* Quick Actions */}
       <div>
-
-        <div className="mb-5">
-          <h2 className="text-xl font-semibold">
-            Portfolio Management
+        <div className="mb-4">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            Kelola Portfolio
           </h2>
 
-          <p className="mt-1 text-sm text-gray-500">
-            Kelola seluruh data portfolio Anda.
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Akses cepat untuk mengelola konten portfolio.
           </p>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
-          {management.map((item) => (
-            <a
-              key={item.title}
-              href={item.path}
-              className="group rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {quickActions.map((action) => (
+            <Link
+              key={action.title}
+              to={action.link}
+              className="group rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-gray-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:hover:border-gray-600"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-xl dark:bg-gray-800">
+                  {action.icon}
+                </div>
 
-                <h3 className="text-lg font-semibold">
-                  {item.title}
-                </h3>
+                <div>
+                  <h3 className="font-semibold text-gray-900 dark:text-white">
+                    {action.title}
+                  </h3>
 
-                <span className="text-gray-400 transition group-hover:translate-x-1 group-hover:text-gray-900">
-                  →
-                </span>
-
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    {action.description}
+                  </p>
+                </div>
               </div>
-
-              <p className="mt-3 text-sm leading-6 text-gray-500">
-                {item.description}
-              </p>
-
-            </a>
+            </Link>
           ))}
-
         </div>
-
       </div>
 
-      {/* Quick Info */}
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-
-        <h2 className="text-lg font-semibold">
-          Status Sistem
+      {/* Welcome */}
+      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Selamat Datang di Admin Dashboard
         </h2>
 
-        <div className="mt-5 grid gap-4 sm:grid-cols-3">
-
-          <div className="rounded-xl bg-gray-50 p-4">
-            <p className="text-sm text-gray-500">
-              Authentication
-            </p>
-
-            <p className="mt-1 font-semibold text-green-600">
-              Connected
-            </p>
-          </div>
-
-          <div className="rounded-xl bg-gray-50 p-4">
-            <p className="text-sm text-gray-500">
-              Firestore
-            </p>
-
-            <p className="mt-1 font-semibold text-green-600">
-              Connected
-            </p>
-          </div>
-
-          <div className="rounded-xl bg-gray-50 p-4">
-            <p className="text-sm text-gray-500">
-              Cloudinary
-            </p>
-
-            <p className="mt-1 font-semibold text-green-600">
-              Connected
-            </p>
-          </div>
-
-        </div>
-
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-500 dark:text-gray-400">
+          Kelola seluruh informasi portfolio Anda melalui menu yang
+          tersedia. Data yang ditambahkan melalui dashboard akan
+          tersimpan di Firebase Firestore.
+        </p>
       </div>
-
     </div>
   )
 }
-
-export default Dashboard
