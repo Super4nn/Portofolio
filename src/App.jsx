@@ -1,12 +1,20 @@
-import firebaseApp from "./lib/firebase"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
+
 import Login from "./pages/Login"
 import Admin from "./pages/Admin"
+import CloudinaryTest from "./pages/CloudinaryTest"
 import ProtectedRoute from "./components/ProtectedRoute"
 
-function Portfolio() {
-  console.log("Firebase berhasil:", firebaseApp)
+import AdminLayout from "./admin/AdminLayout"
+import Dashboard from "./admin/pages/Dashboard"
+import Profile from "./admin/pages/Profile"
+import Skills from "./admin/pages/Skills"
+import Experience from "./admin/pages/Experience"
+import Projects from "./admin/pages/Projects"
+import CV from "./admin/pages/CV"
+import Messages from "./admin/pages/Messages"
 
+function Portfolio() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
 
@@ -14,7 +22,6 @@ function Portfolio() {
       <nav className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur">
         <div className="relative mx-auto flex max-w-7xl items-center justify-center px-6 py-5">
 
-          {/* Logo */}
           <a
             href="#home"
             className="absolute left-6 text-xl font-bold"
@@ -22,9 +29,7 @@ function Portfolio() {
             Portfolio
           </a>
 
-          {/* Navigation */}
           <div className="hidden items-center gap-8 md:flex">
-
             <a
               href="#home"
               className="text-sm text-gray-600 transition hover:text-gray-900"
@@ -66,12 +71,10 @@ function Portfolio() {
             >
               Contact
             </a>
-
           </div>
 
         </div>
       </nav>
-
 
       {/* Hero */}
       <section
@@ -118,7 +121,6 @@ function Portfolio() {
         </div>
       </section>
 
-
       {/* About */}
       <section
         id="about"
@@ -141,7 +143,6 @@ function Portfolio() {
 
         </div>
       </section>
-
 
       {/* Skills */}
       <section
@@ -166,10 +167,12 @@ function Portfolio() {
               "JavaScript",
               "Tailwind CSS",
             ].map((skill) => (
+
               <div
                 key={skill}
                 className="rounded-2xl border border-gray-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-lg"
               >
+
                 <h3 className="font-semibold">
                   {skill}
                 </h3>
@@ -179,13 +182,13 @@ function Portfolio() {
                 </p>
 
               </div>
+
             ))}
 
           </div>
 
         </div>
       </section>
-
 
       {/* Experience */}
       <section
@@ -207,19 +210,20 @@ function Portfolio() {
             <div className="border-l-2 border-gray-300 pl-6">
 
               <p className="text-sm text-gray-500">
-                2024 - Sekarang
+                2023 - Sekarang
               </p>
 
               <h3 className="mt-2 text-xl font-semibold">
-                Position / Role
+                Mahasiswa
               </h3>
 
               <p className="mt-1 text-gray-500">
-                Company / Organization
+                Institut Teknologi Nasional Malang
               </p>
 
               <p className="mt-4 max-w-2xl leading-7 text-gray-600">
-                Deskripsi pengalaman atau pekerjaan.
+                Mahasiswa yang sedang menempuh pendidikan dan
+                mengembangkan kemampuan di bidang teknologi informasi.
               </p>
 
             </div>
@@ -228,7 +232,6 @@ function Portfolio() {
 
         </div>
       </section>
-
 
       {/* Projects */}
       <section
@@ -248,12 +251,12 @@ function Portfolio() {
           <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 
             {[1, 2, 3].map((project) => (
+
               <article
                 key={project}
                 className="overflow-hidden rounded-2xl border border-gray-200 bg-white transition hover:-translate-y-1 hover:shadow-xl"
               >
 
-                {/* Project Image */}
                 <div className="aspect-video bg-gray-200" />
 
                 <div className="p-6">
@@ -281,13 +284,13 @@ function Portfolio() {
                 </div>
 
               </article>
+
             ))}
 
           </div>
 
         </div>
       </section>
-
 
       {/* CV */}
       <section
@@ -309,6 +312,7 @@ function Portfolio() {
           </p>
 
           <button
+            type="button"
             className="mt-6 rounded-xl bg-gray-900 px-6 py-3 text-sm font-medium text-white transition hover:bg-gray-700"
           >
             Download CV
@@ -316,7 +320,6 @@ function Portfolio() {
 
         </div>
       </section>
-
 
       {/* Contact */}
       <section
@@ -365,9 +368,9 @@ function Portfolio() {
         </div>
       </section>
 
-
       {/* Footer */}
       <footer className="border-t border-gray-200 px-6 py-8">
+
         <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 text-sm text-gray-500 md:flex-row">
 
           <p>
@@ -400,6 +403,7 @@ function Portfolio() {
           </div>
 
         </div>
+
       </footer>
 
     </div>
@@ -412,23 +416,74 @@ function App() {
 
       <Routes>
 
+        {/* Portfolio */}
         <Route
           path="/"
           element={<Portfolio />}
         />
 
+        {/* Login */}
         <Route
           path="/login"
           element={<Login />}
         />
 
+        {/* Admin */}
         <Route
           path="/admin"
           element={
             <ProtectedRoute>
-              <Admin />
+              <AdminLayout />
             </ProtectedRoute>
           }
+        >
+          {/* Dashboard */}
+          <Route
+            index
+            element={<Dashboard />}
+          />
+
+          {/* Profile */}
+          <Route
+            path="profile"
+            element={<Profile />}
+          />
+
+          {/* Skills */}
+          <Route
+            path="skills"
+            element={<Skills />}
+          />
+
+          {/* Experience */}
+          <Route
+            path="experience"
+            element={<Experience />}
+          />
+
+          {/* Projects */}
+          <Route
+            path="projects"
+            element={<Projects />}
+          />
+
+          {/* CV */}
+          <Route
+            path="cv"
+            element={<CV />}
+          />
+
+          {/* Messages */}
+          <Route
+            path="messages"
+            element={<Messages />}
+          />
+        </Route>
+
+        {/* Cloudinary Test */}
+        <Route
+          path="/cloudinary-test"
+          element={<CloudinaryTest />}
         />
 
       </Routes>
