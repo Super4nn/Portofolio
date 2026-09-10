@@ -70,7 +70,7 @@ export default function Skills() {
 
         {/* Empty */}
         {!loading && skills.length === 0 && (
-          <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center dark:border-gray-700 dark:bg-gray-950">
+          <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md dark:border-gray-700 dark:bg-gray-950">
             <p className="text-gray-500 dark:text-gray-400">
               Belum ada skill yang ditambahkan.
             </p>

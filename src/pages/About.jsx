@@ -25,7 +25,7 @@ export default function About() {
       id="about"
       className="scroll-mt-24 bg-white px-6 py-24 dark:bg-gray-950"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="animate-fade-up mx-auto max-w-6xl">
         {/* Heading */}
         <div className="mb-12">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">

@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom"
 import { signOut } from "firebase/auth"
 import { auth } from "../lib/firebase"
+import ThemeToggle from "../components/ThemeToggle"
 
 function AdminLayout() {
   const navigate = useNavigate()
@@ -46,19 +47,19 @@ function AdminLayout() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900">
+    <div className="min-h-screen bg-gray-100 text-gray-900 dark:bg-gray-950 dark:text-white">
 
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-gray-200 bg-white">
+      <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col border-r border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
 
         {/* Logo */}
-        <div className="flex h-20 items-center border-b border-gray-200 px-6">
+        <div className="flex h-20 items-center border-b border-gray-200 px-6 dark:border-gray-800">
           <div>
-            <h1 className="text-xl font-bold">
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white">
               Portfolio
             </h1>
 
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               Admin Dashboard
             </p>
           </div>
@@ -75,8 +76,8 @@ function AdminLayout() {
               className={({ isActive }) =>
                 `block rounded-lg px-4 py-3 text-sm font-medium transition ${
                   isActive
-                    ? "bg-gray-900 text-white"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900"
+                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
                 }`
               }
             >
@@ -87,11 +88,11 @@ function AdminLayout() {
         </nav>
 
         {/* Logout */}
-        <div className="border-t border-gray-200 p-4">
+        <div className="border-t border-gray-200 p-4 dark:border-gray-800">
 
           <button
             onClick={handleLogout}
-            className="w-full rounded-lg px-4 py-3 text-left text-sm font-medium text-red-600 transition hover:bg-red-50"
+            className="w-full rounded-lg px-4 py-3 text-left text-sm font-medium text-red-600 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
           >
             Logout
           </button>
@@ -101,24 +102,29 @@ function AdminLayout() {
       </aside>
 
       {/* Main Content */}
-      <div className="ml-64 min-h-screen">
+      <div className="ml-64 min-h-screen bg-gray-100 dark:bg-gray-950">
 
         {/* Header */}
-        <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-gray-200 bg-white/95 px-8 backdrop-blur">
+        <header className="sticky top-0 z-30 flex h-20 items-center justify-between border-b border-gray-200 bg-white/95 px-8 backdrop-blur dark:border-gray-800 dark:bg-gray-950/95">
 
           <div>
-            <h2 className="text-lg font-semibold">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
               Admin Dashboard
             </h2>
 
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Kelola portfolio Anda
             </p>
           </div>
 
+          {/* Header Actions */}
           <div className="flex items-center gap-3">
 
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-sm font-semibold text-white">
+            {/* Theme Toggle */}
+            <ThemeToggle />
+
+            {/* Avatar */}
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-sm font-semibold text-white dark:bg-white dark:text-gray-900">
               A
             </div>
 
@@ -127,7 +133,7 @@ function AdminLayout() {
         </header>
 
         {/* Page */}
-        <main className="p-8">
+        <main className="min-h-[calc(100vh-5rem)] bg-gray-100 p-8 dark:bg-gray-950">
           <Outlet />
         </main>
 

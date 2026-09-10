@@ -46,12 +46,12 @@ export default function Home() {
       ========================== */}
       <section
         id="home"
-        className="flex min-h-screen scroll-mt-24 items-center justify-center px-6 pt-20"
+        className="flex min-h-screen scroll-mt-24 items-center justify-center px-4 pt-24 sm:px-6 sm:pt-20"
       >
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 md:flex-row md:gap-14">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-8 md:flex-row md:gap-14">
           {/* Profile Image */}
           {profile?.profileImageUrl && (
-            <div className="shrink-0">
+            <div className="animate-fade-up shrink-0">
               <img
                 src={profile.profileImageUrl}
                 alt={profile.name || "Profile"}
@@ -61,7 +61,7 @@ export default function Home() {
           )}
 
           {/* Hero Content */}
-          <div className="max-w-3xl text-center md:text-left">
+          <div className="animate-fade-up max-w-3xl text-center md:text-left">
             <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-gray-500 dark:text-gray-400">
               Welcome to my portfolio
             </p>
@@ -84,14 +84,14 @@ export default function Home() {
             <div className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
               <a
                 href="#projects"
-                className="rounded-xl bg-gray-900 px-5 py-3 text-sm font-medium text-white transition hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
+                className="w-full rounded-xl bg-gray-900 px-5 py-3 text-center text-sm font-medium text-white transition hover:bg-gray-700 sm:w-auto dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
               >
                 Lihat Project
               </a>
 
               <a
                 href="#contact"
-                className="rounded-xl border border-gray-300 px-5 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-100 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="w-full rounded-xl border border-gray-300 px-5 py-3 text-center text-sm font-medium text-gray-700 transition hover:bg-gray-100 sm:w-auto dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
               >
                 Hubungi Saya
               </a>
