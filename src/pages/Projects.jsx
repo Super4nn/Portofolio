@@ -69,7 +69,7 @@ export default function Projects() {
         <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="font-mono text-xs tracking-[0.2em] uppercase text-[var(--accent)] mb-2">
-              04 // SELECTED WORK
+              04 SELECTED WORK
             </p>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
               Selected Work

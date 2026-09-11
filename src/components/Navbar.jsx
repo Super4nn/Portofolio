@@ -14,8 +14,8 @@ export default function Navbar() {
   ]
 
   return (
-    <header className="fixed left-0 right-0 top-0 z-50 border-b border-[var(--border-subtle)] bg-[var(--bg-primary)]/85 backdrop-blur-md transition-colors duration-300">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3.5 sm:px-8">
+    <header className="fixed left-0 right-0 top-0 z-50 border-b border-[var(--rule-color)] bg-[var(--bg-primary)]/85 backdrop-blur-md transition-colors duration-300">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5 sm:px-8">
         {/* Logo / Monogram */}
         <a
           href="#home"

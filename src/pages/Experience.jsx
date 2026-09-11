@@ -15,6 +15,7 @@ export default function Experience() {
     const fetchExperiences = async () => {
       try {
         const experiencesRef = collection(db, "experiences")
+
         const experiencesQuery = query(
           experiencesRef,
           orderBy("sortOrder", "asc")
@@ -41,103 +42,323 @@ export default function Experience() {
   return (
     <section
       id="experience"
-      className="scroll-mt-24 px-6 py-20 sm:px-8 lg:py-24 bg-[var(--bg-primary)] text-[var(--text-primary)] transition-colors duration-300"
+      className="
+        scroll-mt-24
+        bg-[var(--bg-primary)]
+        px-6
+        py-20
+        text-[var(--text-primary)]
+        transition-colors
+        duration-300
+        sm:px-8
+        lg:py-24
+      "
     >
       <div className="mx-auto max-w-6xl">
+
+        {/* =========================================================
+            SECTION DIVIDER
+        ========================================================== */}
         <hr className="editorial-rule mb-16" />
 
-        {/* Section Header */}
-        <div className="mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        {/* =========================================================
+            SECTION HEADER
+        ========================================================== */}
+        <div
+          className="
+            mb-14
+            flex
+            flex-col
+            justify-between
+            gap-6
+            md:flex-row
+            md:items-end
+          "
+        >
+          {/* LEFT */}
           <div>
-            <p className="font-mono text-xs tracking-[0.2em] uppercase text-[var(--accent)] mb-2">
-              03 // TIMELINE
+            <p
+              className="
+                mb-2
+                font-mono
+                text-xs
+                uppercase
+                tracking-[0.2em]
+                text-[var(--accent)]
+              "
+            >
+              03 TIMELINE
             </p>
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
+
+            <h2
+              className="
+                font-display
+                text-3xl
+                font-bold
+                tracking-tight
+                text-[var(--text-primary)]
+                sm:text-4xl
+                lg:text-5xl
+              "
+            >
               Work & Academic Journey
             </h2>
           </div>
 
-          <p className="max-w-md font-sans text-sm leading-relaxed text-[var(--text-secondary)]">
-            Rekam jejak pendidikan, peran profesional, dan pengalaman dalam rekayasa perangkat lunak.
+          {/* RIGHT */}
+          <p
+            className="
+              max-w-md
+              font-sans
+              text-sm
+              leading-relaxed
+              text-[var(--text-secondary)]
+              text-justify
+            "
+          >
+            Rekam jejak pendidikan, peran profesional, dan pengalaman
+            dalam rekayasa perangkat lunak.
           </p>
         </div>
 
-        {/* Loading State */}
+        {/* =========================================================
+            LOADING STATE
+        ========================================================== */}
         {loading && (
-          <div className="py-12 font-mono text-xs text-[var(--text-muted)] tracking-wider uppercase">
+          <div
+            className="
+              py-12
+              font-mono
+              text-xs
+              uppercase
+              tracking-wider
+              text-[var(--text-muted)]
+            "
+          >
             Memuat riwayat pengalaman...
           </div>
         )}
 
-        {/* Empty State */}
+        {/* =========================================================
+            EMPTY STATE
+        ========================================================== */}
         {!loading && experiences.length === 0 && (
-          <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-secondary)]/30 p-8 text-center">
-            <p className="font-mono text-xs uppercase tracking-wider text-[var(--text-muted)]">
+          <div
+            className="
+              rounded-xl
+              border
+              border-[var(--border-subtle)]
+              bg-[var(--bg-secondary)]/30
+              p-8
+              text-center
+            "
+          >
+            <p
+              className="
+                font-mono
+                text-xs
+                uppercase
+                tracking-wider
+                text-[var(--text-muted)]
+              "
+            >
               Belum ada riwayat pengalaman yang ditambahkan.
             </p>
           </div>
         )}
 
-        {/* Experience Editorial Timeline */}
+        {/* =========================================================
+            EXPERIENCE TIMELINE
+        ========================================================== */}
         {!loading && experiences.length > 0 && (
-          <div className="divide-y divide-[var(--border-subtle)] border-t border-b border-[var(--border-subtle)]">
+          <div
+            className="
+              divide-y
+              divide-[var(--border-subtle)]
+              border-b
+              border-t
+              border-[var(--border-subtle)]
+            "
+          >
             {experiences.map((experience) => {
               const periodText = `${experience.startDate || "-"} — ${
-                experience.isCurrent ? "Sekarang" : experience.endDate || "-"
+                experience.isCurrent
+                  ? "Sekarang"
+                  : experience.endDate || "-"
               }`
 
               return (
                 <article
                   key={experience.id}
-                  className="group py-8 transition-colors duration-200 sm:py-10 hover:bg-[var(--bg-secondary)]/30 px-3 -mx-3 rounded-xl"
+                  className="
+                    group
+                    -mx-3
+                    rounded-xl
+                    px-3
+                    py-8
+                    transition-colors
+                    duration-200
+                    hover:bg-[var(--bg-secondary)]/30
+                    sm:py-10
+                  "
                 >
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-10">
-                    {/* Column 1: Date & Metadata (Mono) */}
-                    <div className="md:col-span-4 space-y-2">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs tracking-wider uppercase font-semibold text-[var(--text-primary)]">
+                  <div
+                    className="
+                      grid
+                      grid-cols-1
+                      gap-6
+                      md:grid-cols-12
+                      md:gap-10
+                    "
+                  >
+
+                    {/* =================================================
+                        LEFT COLUMN
+                        DATE + LOCATION
+                    ================================================== */}
+                    <div
+                      className="
+                        space-y-2
+                        md:col-span-4
+                      "
+                    >
+                      {/* DATE + STATUS */}
+                      <div
+                        className="
+                          flex
+                          flex-wrap
+                          items-center
+                          gap-2
+                        "
+                      >
+                        <span
+                          className="
+                            font-mono
+                            text-xs
+                            font-semibold
+                            uppercase
+                            tracking-wider
+                            text-[var(--text-primary)]
+                          "
+                        >
                           {periodText}
                         </span>
 
+                        {/* ACTIVE STATUS */}
                         {experience.isCurrent && (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] text-emerald-600 dark:text-emerald-400">
-                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                            <span>Aktif</span>
+                          <span
+                            className="
+                              inline-flex
+                              items-center
+                              gap-1
+                              rounded-full
+                              border
+                              border-emerald-500/30
+                              bg-emerald-500/10
+                              px-2
+                              py-0.5
+                              font-mono
+                              text-[10px]
+                              text-emerald-600
+                              dark:text-emerald-400
+                            "
+                          >
+                            <span
+                              className="
+                                h-1.5
+                                w-1.5
+                                rounded-full
+                                bg-emerald-500
+                              "
+                            />
+
+                            <span>
+                              Aktif
+                            </span>
                           </span>
                         )}
                       </div>
 
+                      {/* LOCATION */}
                       {experience.location && (
-                        <p className="font-mono text-[11px] text-[var(--text-muted)]">
+                        <p
+                          className="
+                            font-mono
+                            text-[11px]
+                            text-[var(--text-muted)]
+                          "
+                        >
                           {experience.location}
                         </p>
                       )}
                     </div>
 
-                    {/* Column 2: Role, Company & Narrative Description */}
-                    <div className="md:col-span-8 space-y-3">
+                    {/* =================================================
+                        RIGHT COLUMN
+                        POSITION + COMPANY + DESCRIPTION
+                    ================================================== */}
+                    <div
+                      className="
+                        space-y-3
+                        md:col-span-8
+                      "
+                    >
+                      {/* POSITION + COMPANY */}
                       <div>
-                        <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
+                        <h3
+                          className="
+                            font-display
+                            text-xl
+                            font-bold
+                            tracking-tight
+                            text-[var(--text-primary)]
+                            transition-colors
+                            sm:text-2xl
+                            group-hover:text-[var(--accent)]
+                          "
+                        >
                           {experience.position || "Posisi"}
                         </h3>
 
-                        <p className="font-sans text-base font-medium text-[var(--text-secondary)] mt-0.5">
-                          {experience.company || "Institusi / Perusahaan"}
+                        <p
+                          className="
+                            mt-0.5
+                            font-sans
+                            text-base
+                            font-medium
+                            text-[var(--text-secondary)]
+                          "
+                        >
+                          {experience.company ||
+                            "Institusi / Perusahaan"}
                         </p>
                       </div>
 
+                      {/* DESCRIPTION */}
                       {experience.description && (
-                        <p className="font-sans text-sm leading-relaxed text-[var(--text-secondary)] whitespace-pre-line pt-2">
+                        <p
+                          className="
+                            whitespace-pre-line
+                            pt-2
+                            font-sans
+                            text-sm
+                            leading-relaxed
+                            text-[var(--text-secondary)]
+                            text-justify
+                          "
+                        >
                           {experience.description}
                         </p>
                       )}
                     </div>
+
                   </div>
                 </article>
               )
             })}
           </div>
         )}
+
       </div>
     </section>
   )
